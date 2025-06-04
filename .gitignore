@@ -21,4 +21,8 @@ build/
 .env 
 
 # Large files
-ratings.dat 
+ratings.dat
+
+# Cursor files
+.cursorignore
+.cursorrules 

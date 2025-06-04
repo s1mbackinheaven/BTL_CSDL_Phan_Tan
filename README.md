@@ -70,4 +70,22 @@ roundrobininsert(userid, itemid, rating)
 Sử dụng Assignment1Tester.py để chạy các test case:
 ```bash
 python Assignment1Tester.py
-``` 
+```
+
+## Cấu Trúc File Python
+
+1. **Interface.py**
+   - File chính chứa các hàm interface để tương tác với hệ thống
+   - Triển khai các hàm: loadratings, rangepartition, roundrobinpartition, rangeinsert, roundrobininsert
+   - Xử lý kết nối và tương tác với PostgreSQL
+
+2. **Assignment1Tester.py**
+   - File kiểm thử tự động
+   - Chứa các test case để kiểm tra tính đúng đắn của các hàm
+   - Kiểm tra các trường hợp biên và xử lý lỗi
+
+3. **solution.py**
+   - File chứa code chính của dự án
+   - Có thể test với file ratings.dat (data lớn, chạy chậm) hoặc test_data.dat (data nhỏ, chạy nhanh) bằng cách thay đổi đường dẫn file
+   - Triển khai chi tiết các hàm xử lý phân mảnh dữ liệu
+   - Xử lý kết nối database và các thao tác với PostgreSQL 
