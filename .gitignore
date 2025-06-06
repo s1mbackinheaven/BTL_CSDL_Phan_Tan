@@ -25,4 +25,7 @@ ratings.dat
 
 # Cursor files
 .cursorignore
-.cursorrules 
+.cursorrules
+
+# Test files
+MyTester.py 

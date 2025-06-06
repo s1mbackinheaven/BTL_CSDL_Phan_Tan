@@ -75,7 +75,7 @@ python Assignment1Tester.py
 ## Cấu Trúc File Python
 
 1. **Interface.py**
-   - File chính chứa các hàm interface để tương tác với hệ thống
+   - File chính chứa các hàm interface để tương tác với hệ thống (code thảm khảo)
    - Triển khai các hàm: loadratings, rangepartition, roundrobinpartition, rangeinsert, roundrobininsert
    - Xử lý kết nối và tương tác với PostgreSQL
 
@@ -85,7 +85,7 @@ python Assignment1Tester.py
    - Kiểm tra các trường hợp biên và xử lý lỗi
 
 3. **solution.py**
-   - File chứa code chính của dự án
+   - File chứa code chính của dự án (code làm)
    - Có thể test với file ratings.dat (data lớn, chạy chậm) hoặc test_data.dat (data nhỏ, chạy nhanh) bằng cách thay đổi đường dẫn file
-   - Triển khai chi tiết các hàm xử lý phân mảnh dữ liệu
+   - Triển khai các hàm: loadratings, rangepartition, roundrobinpartition, rangeinsert, roundrobininsert
    - Xử lý kết nối database và các thao tác với PostgreSQL 
