@@ -463,7 +463,7 @@ Total Storage: ~720MB (với dual storage strategy)
 
 #### **8.1.1. Prerequisites**
 ```bash
-# Install Python 3.8+
+# Install Python 3.12+
 # Install PostgreSQL 12+
 # Install required packages
 pip install psycopg2-binary
