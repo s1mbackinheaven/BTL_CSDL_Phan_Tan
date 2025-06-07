@@ -33,29 +33,27 @@ def getopenconnection(user='postgres', password='1234', dbname='postgres', host=
 
 def loadratings(ratingstablename, ratingsfilepath, openconnection):
     """
-    Hàm 1: Tải dữ liệu từ file ratings.dat vào bảng Ratings
-    Sử dụng COPY command để tối ưu tốc độ với dataset lớn
+    Hàm 1: Load dữ liệu từ file vào bảng
+    Implementation theo Interface.py với sửa đổi nhỏ
     """
     cur = openconnection.cursor()
     
     try:
-        # Drop table nếu đã tồn tại
-        cur.execute(f"DROP TABLE IF EXISTS {ratingstablename} CASCADE;")
-        
-        # Tạo bảng tạm với cấu trúc phù hợp với file input
+        # Tạo bảng với cấu trúc giống Interface.py
         cur.execute(f"""
+        DROP TABLE IF EXISTS {ratingstablename} CASCADE;
         CREATE TABLE {ratingstablename} (
-            userid INTEGER,
-            extra1 CHAR,
-            movieid INTEGER,
-            extra2 CHAR,
-            rating FLOAT,
-            extra3 CHAR,
+            userid INTEGER, 
+            extra1 CHAR, 
+            movieid INTEGER, 
+            extra2 CHAR, 
+            rating FLOAT, 
+            extra3 CHAR, 
             timestamp BIGINT
         )
         """)
         
-        # Copy data từ file vào bảng
+        # Copy data từ file
         with open(ratingsfilepath, 'r') as f:
             cur.copy_from(f, ratingstablename, sep=':')
         
@@ -72,7 +70,7 @@ def loadratings(ratingstablename, ratingsfilepath, openconnection):
         
     except Exception as e:
         openconnection.rollback()
-        print(f"Lỗi khi tải dữ liệu: {e}")
+        print(f"Lỗi khi load ratings: {e}")
         raise
     finally:
         cur.close()
@@ -184,7 +182,7 @@ def roundrobinpartition(ratingstablename, numberofpartitions, openconnection):
             ) t
             WHERE MOD(rnum - 1, {numberofpartitions}) = {i}
             """)
-        
+            
         openconnection.commit()
         
     except Exception as e:
@@ -244,11 +242,12 @@ def rangeinsert(ratingstablename, userid, itemid, rating, openconnection):
 def roundrobininsert(ratingstablename, userid, itemid, rating, openconnection):
     """
     Hàm 5: Chèn record mới vào bảng gốc và phân mảnh Round Robin tiếp theo
+    Fix logic để consistent với roundrobinpartition
     """
     cur = openconnection.cursor()
     
     try:
-        # Insert vào bảng gốc
+        # Insert vào bảng gốc trước
         cur.execute(f"""
         INSERT INTO {ratingstablename} (userid, movieid, rating)
         VALUES (%s, %s, %s)
@@ -263,12 +262,16 @@ def roundrobininsert(ratingstablename, userid, itemid, rating, openconnection):
         numberofpartitions = cur.fetchone()[0]
         
         if numberofpartitions > 0:
-            # Xác định tổng số records để tính partition index
-            cur.execute(f"SELECT COUNT(*) FROM {ratingstablename}")
-            total_records = cur.fetchone()[0]
+            # Logic: Tính partition dựa trên tổng số records trong tất cả partitions
+            # để đảm bảo consistent với cách phân chia ban đầu
+            total_partition_records = 0
+            for i in range(numberofpartitions):
+                cur.execute(f"SELECT COUNT(*) FROM {RROBIN_TABLE_PREFIX}{i}")
+                total_partition_records += cur.fetchone()[0]
             
-            partition_index = (total_records - 1) % numberofpartitions
-            table_name = f"{RROBIN_TABLE_PREFIX}{partition_index}"
+            # Partition index cho record mới
+            index = total_partition_records % numberofpartitions
+            table_name = f"{RROBIN_TABLE_PREFIX}{index}"
             
             cur.execute(f"""
             INSERT INTO {table_name} (userid, movieid, rating)
