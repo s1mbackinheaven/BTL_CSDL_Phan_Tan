@@ -3,11 +3,14 @@
 
 ---
 
-### **THÔNG TIN ĐỀ TÀI**
-- **Tên đề tài:** Thiết kế và triển khai hệ thống phân mảnh dữ liệu
+### **THÔNG TIN**
 - **Môn học:** Cơ sở dữ liệu phân tán
 - **Nhóm:** 6
-- **Ngày hoàn thành:** [Ngày tháng năm]
+- **Thành viên nhóm:**
+  - Trịnh Lê Xuân Bách - B22DCCN056
+  - Thào A Bảy - B22DCCN072
+  - Trần Chung Khải - B22DCCN443
+
 
 ---
 
