@@ -20,12 +20,6 @@ build/
 # Environment variables
 .env 
 
-# Large files
-ratings.dat
-
 # Cursor files
 .cursorignore
 .cursorrules
-
-# Test files
-MyTester.py 
